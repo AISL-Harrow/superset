@@ -143,3 +143,5 @@ PROJECT.md
 oxc-custom-build/
 *.code-workspace
 *.duckdb
+
+group_operations
