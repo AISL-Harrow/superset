@@ -135,6 +135,28 @@ services:
         condition: service_completed_successfully
     volumes: *superset-volumes
 
+  superset-mcp:
+    env_file:
+      - path: docker/.env # default
+        required: true
+      - path: docker/.env-local # optional override
+        required: false
+    build:
+      <<: *common-build
+    command: ["/app/docker/docker-bootstrap.sh", "mcp"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:$${MCP_PORT:-5008}/health || exit 1"]
+    ports:
+      - ${MCP_PORT:-5008}:5008
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    user: *superset-user
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+    volumes: *superset-volumes
+
   superset-websocket:
     build: ./superset-websocket
     ports:

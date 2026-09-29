@@ -226,6 +226,10 @@ RUN /app/docker/apt-install.sh \
       libpq-dev \
       libldap2-dev
 
+RUN /app/docker/install-mssql-odbc.sh
+RUN --mount=type=cache,target=${SUPERSET_HOME}/.cache/uv \
+    uv pip install pyodbc
+
 # Create data directory for DuckDB examples database
 # The database file will be created at runtime when examples are loaded from Parquet files
 RUN mkdir -p /app/data && chown -R superset:superset /app/data

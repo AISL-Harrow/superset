@@ -145,3 +145,4 @@ oxc-custom-build/
 *.duckdb
 
 group_operations
+.mcp.json
